@@ -3,7 +3,9 @@ import React from "react";
 const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
-    console.log(e.target.email);
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    console.log(email, password);
   };
 
   return (
@@ -53,9 +55,9 @@ const Register = () => {
             </g>
           </svg>
           <input
+            name="password"
             type="password"
             placeholder="Password"
-            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
             title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
           />
         </label>
