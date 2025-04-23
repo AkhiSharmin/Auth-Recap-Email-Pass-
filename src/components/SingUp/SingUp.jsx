@@ -65,8 +65,10 @@ const SingUp = () => {
             type="password"
             className="input my-4"
             placeholder="Password"
+            required
           />
         </div>
+        <button className="btn btn-xs">e</button>
         <div>
           <a className="link link-hover">Forgot password?</a>
         </div>
