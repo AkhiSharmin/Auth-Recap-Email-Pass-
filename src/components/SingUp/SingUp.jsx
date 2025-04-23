@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../firebase.init";
 import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa6";
 
 const SingUp = () => {
   const [success, setSuccess] = useState(false);
@@ -12,11 +13,17 @@ const SingUp = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(email, password);
+    const terms = e.target.terms.checked;
+    console.log(email, password, terms);
 
     // reset error and statues
     setErrorMassage("");
     setSuccess(false);
+
+    if (!terms) {
+      setErrorMassage("Please accept Our terms and condition");
+      return;
+    }
 
     if (password.length < 6) {
       setErrorMassage("Password should be 6 characters or longer");
@@ -74,11 +81,21 @@ const SingUp = () => {
           onClick={() => setShowPassword(!showPassword)}
           className="btn btn-xs absolute right-[41px] top-[205px]"
         >
-          <FaEye></FaEye>
+          {showPassword ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}
         </button>
         <div>
           <a className="link link-hover">Forgot password?</a>
         </div>
+
+        <div className="form-control">
+          <label className="label cursor-pointer">
+            <input type="checkbox" name="terms" className="checkbox" />
+            <span className="label-text ml-2">
+              Accept Our Terms and Condition
+            </span>
+          </label>
+        </div>
+
         <button className="btn btn-success btn-wide mt-4">Sing Up</button>
       </form>
       {errorMassage && <p className="text-red-600">{errorMassage}</p>}
