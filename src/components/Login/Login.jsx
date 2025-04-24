@@ -1,11 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase.init";
+import { Link } from "react-router-dom";
 
 const Login = () => {
+  const [success, setSuccess] = useState(false);
+  const [logInError, setLogInError] = useState("");
+
   const handleLogIn = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
     console.log(email, password);
+
+    // reset status
+    setSuccess(false);
+    setLogInError("");
+
+    // login user
+    signInWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        console.log(result.user);
+
+        if (!result.user.emailVerified) {
+          setLogInError("please verify your email address");
+        } else {
+          setSuccess(true);
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error.message);
+        setLogInError(error.message);
+      });
   };
 
   return (
@@ -48,6 +74,14 @@ const Login = () => {
             </div>
             <button className="btn btn-neutral mt-4">Login</button>
           </form>
+          {success && <p className="text-green-600">User Login Successfully</p>}
+          {logInError && <p className="text-red-600">{logInError}</p>}
+          <p className="text-center pb-4">
+            New to this website Please{" "}
+            <Link to="/singUp">
+              <span className="underline text-green-600">Sing Up</span>
+            </Link>
+          </p>
         </div>
       </div>
     </div>

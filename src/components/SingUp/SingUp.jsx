@@ -1,8 +1,12 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../firebase.init";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const SingUp = () => {
   const [success, setSuccess] = useState(false);
@@ -45,6 +49,11 @@ const SingUp = () => {
       .then((result) => {
         console.log(result.user);
         setSuccess(true);
+
+        //send verification email address
+        sendEmailVerification(auth.currentUser).then(() => {
+          console.log("Email verification sent!");
+        });
       })
       .catch((error) => {
         console.log("Error", error.message);
@@ -102,6 +111,13 @@ const SingUp = () => {
       {success && (
         <p className="text-green-600 text-center">Sing in Successful</p>
       )}
+
+      <p className="pb-4">
+        Already have an a account? Please
+        <Link to="/login">
+          <span className="ml-2 underline text-green-600 ">Log In</span>
+        </Link>
+      </p>
     </div>
   );
 };

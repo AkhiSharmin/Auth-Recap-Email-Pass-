@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <Register></Register>,
       },
       {
-        path: "signUp",
+        path: "singUp",
         element: <SingUp></SingUp>,
       },
     ],
