@@ -1,5 +1,8 @@
 import React, { useRef, useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "../../firebase.init";
 import { Link } from "react-router-dom";
 
@@ -39,6 +42,13 @@ const Login = () => {
   const handleForgetPassword = () => {
     console.log("Get me email address", emailRef.current.value);
     const email = emailRef.current.value;
+    if (!email) {
+      console.log("please provide email address");
+    } else {
+      sendPasswordResetEmail(auth, email).then(() => {
+        alert("Password Reset email sent, please check your email");
+      });
+    }
   };
 
   return (
