@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase.init";
 import { Link } from "react-router-dom";
@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 const Login = () => {
   const [success, setSuccess] = useState(false);
   const [logInError, setLogInError] = useState("");
+
+  const emailRef = useRef();
 
   const handleLogIn = (e) => {
     e.preventDefault();
@@ -34,6 +36,11 @@ const Login = () => {
       });
   };
 
+  const handleForgetPassword = () => {
+    console.log("Get me email address", emailRef.current.value);
+    const email = emailRef.current.value;
+  };
+
   return (
     <div className="hero bg-base-200 min-h-screen">
       <div className="hero-content flex-col lg:flex-row-reverse">
@@ -55,6 +62,7 @@ const Login = () => {
                 name="email"
                 type="email"
                 className="input"
+                ref={emailRef}
                 placeholder="Email"
               />
             </div>
@@ -70,7 +78,9 @@ const Login = () => {
               />
             </div>
             <div>
-              <a className="link link-hover">Forgot password?</a>
+              <label onClick={handleForgetPassword} className="label">
+                <a className="link link-hover">Forgot password?</a>
+              </label>
             </div>
             <button className="btn btn-neutral mt-4">Login</button>
           </form>
