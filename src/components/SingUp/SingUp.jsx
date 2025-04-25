@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../firebase.init";
@@ -17,8 +18,10 @@ const SingUp = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
+    const name = e.target.name.value;
+    const photo = e.target.photo.value;
     const terms = e.target.terms.checked;
-    console.log(email, password, terms);
+    console.log(email, password, terms, name, photo);
 
     // reset error and statues
     setErrorMassage("");
@@ -54,6 +57,20 @@ const SingUp = () => {
         sendEmailVerification(auth.currentUser).then(() => {
           console.log("Email verification sent!");
         });
+
+        //update profile name ans photo url
+        const profile = {
+          displayName: name,
+          photoURL: photo,
+        };
+
+        updateProfile(auth.currentUser, profile)
+          .then(() => {
+            console.log("user profile update");
+          })
+          .catch((error) => {
+            console.log("user profile update error");
+          });
       })
       .catch((error) => {
         console.log("Error", error.message);
@@ -65,8 +82,30 @@ const SingUp = () => {
   return (
     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl mx-auto">
       <h3 className="text-3xl ml-4 font-bold">Sing Up now!</h3>
-      <form onSubmit={handelSingUp} className="card-body">
-        <div className="form-control relative">
+      <form onSubmit={handelSingUp} className="card-body relative">
+        <div className="form-control ">
+          <label className="label">Name</label>
+          <input
+            name="name"
+            type="text"
+            className="input my-4"
+            placeholder="Name"
+            required
+          />
+        </div>
+
+        <div className="form-control ">
+          <label className="label">Photo Url</label>
+          <input
+            name="photo"
+            type=" text"
+            className="input my-4"
+            placeholder="Photo Url"
+            required
+          />
+        </div>
+
+        <div className="form-control">
           <label className="label">Email</label>
           <input
             name="email"
@@ -88,7 +127,7 @@ const SingUp = () => {
         </div>
         <button
           onClick={() => setShowPassword(!showPassword)}
-          className="btn btn-xs absolute right-[41px] top-[205px]"
+          className="btn btn-xs absolute right-[41px] top-[270px]"
         >
           {showPassword ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}
         </button>
